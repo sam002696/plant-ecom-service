@@ -16,7 +16,7 @@ public class User extends BaseEntity {
     private Long id;
     private String profileImage;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Address> addresses;
     private String email;
     private String name;
@@ -26,6 +26,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoleName role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Order> orders;
 }
