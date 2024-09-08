@@ -26,4 +26,9 @@ public class PlantService implements IPlantService {
         return plantRepository.save(plant);
 
     }
+
+    @Override
+    public Plant findById(Long plantId) {
+        return null;
+    }
 }

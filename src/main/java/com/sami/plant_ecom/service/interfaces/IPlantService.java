@@ -6,5 +6,5 @@ import com.sami.plant_ecom.entity.Plant;
 public interface IPlantService {
     Plant addPlant(PlantRequest plantRequest);
 
-
+    Plant findById(Long plantId);
 }
