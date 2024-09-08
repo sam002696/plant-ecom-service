@@ -3,6 +3,7 @@ package com.sami.plant_ecom.controller;
 
 import com.sami.plant_ecom.dto.PlantRequest;
 import com.sami.plant_ecom.entity.Plant;
+import com.sami.plant_ecom.responses.PlantResponse;
 import com.sami.plant_ecom.service.interfaces.IPlantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,6 +48,19 @@ public class PlantController {
     }
 
 
+
+    @GetMapping("{plantId}")
+    @Operation(summary = "Get a plant", description = "Get a plant by it's id")
+    @ApiResponse(responseCode = "200", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = PlantResponse.class))
+    })
+    public ResponseEntity<JSONObject> getPlantById(@PathVariable Long plantId) {
+
+        PlantResponse plantResponse = plantService.getPlantById(plantId);
+
+        return ok(success(plantResponse).getJson());
+
+    }
 
 
 }

@@ -4,6 +4,7 @@ import com.sami.plant_ecom.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 
 @Data
 @Entity
@@ -17,16 +18,12 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private int quantity;
     private double total;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "plant_id")
-    private Plant plant;
-
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
 }

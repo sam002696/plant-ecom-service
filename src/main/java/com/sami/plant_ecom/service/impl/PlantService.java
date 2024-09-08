@@ -2,7 +2,9 @@ package com.sami.plant_ecom.service.impl;
 
 import com.sami.plant_ecom.dto.PlantRequest;
 import com.sami.plant_ecom.entity.Plant;
+import com.sami.plant_ecom.exceptions.CustomMessageException;
 import com.sami.plant_ecom.repository.PlantRepository;
+import com.sami.plant_ecom.responses.PlantResponse;
 import com.sami.plant_ecom.service.interfaces.IPlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,11 @@ public class PlantService implements IPlantService {
     }
 
     @Override
-    public Plant findById(Long plantId) {
-        return null;
+    public PlantResponse getPlantById(Long plantId) {
+        Plant plant = plantRepository.findById(plantId)
+                .orElseThrow(() -> new CustomMessageException("Plant not found!"));
+
+        return PlantResponse.select(plant);
+
     }
 }
