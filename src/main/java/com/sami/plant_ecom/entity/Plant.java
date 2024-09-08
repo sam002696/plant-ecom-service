@@ -16,12 +16,12 @@ public class Plant extends BaseEntity {
     private String plantName;
     private double sold;
     private double rating;
-    private int reviews;
+//    private int reviews;
     private String plantDesc;
     private int quantity;
     private boolean favorite;
     private String category;
 
-    @OneToMany(mappedBy = "plant")
+    @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY)
     private List<Order> orders;
 }

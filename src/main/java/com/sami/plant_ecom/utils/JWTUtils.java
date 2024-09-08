@@ -1,6 +1,5 @@
 package com.sami.plant_ecom.utils;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,24 +15,24 @@ import java.util.function.Function;
 @Service
 public class JWTUtils {
 
+    // Set expiration time for 6 days
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 6; // 6 days
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 24 * 7; //for 7 days
 
-//    private final SecretKey Key;
     private final SecretKey key;
 
     public JWTUtils() {
         String secretString = "843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3";
-        byte[] keyBytes = Base64.getDecoder().decode(secretString.getBytes(StandardCharsets.UTF_8));
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        byte[] keyBytes = secretString.getBytes(StandardCharsets.UTF_8); // Use the raw bytes of the string
+        this.key = Keys.hmacShaKeyFor(keyBytes); // Generate the key
     }
-    Date now = new Date();
+
     public String generateToken(UserDetails userDetails) {
+        Date now = new Date(); // Generate current time each time the method is called
         return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-//                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .expiration(new Date(now.getTime() + 604800000))
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + EXPIRATION_TIME)) // Set expiration
                 .signWith(key)
                 .compact();
     }
