@@ -19,9 +19,11 @@ public class PlantService implements IPlantService {
     public Plant addPlant(PlantRequest plantRequest) {
         Plant plant = new Plant();
         plant.setPlantName(plantRequest.getPlantName());
+        plant.setPlantDesc(plantRequest.getPlantDesc());
         plant.setSold(plantRequest.getSold());
         plant.setRating(plantRequest.getRating());
         plant.setQuantity(plantRequest.getQuantity());
+        plant.setPrice(plantRequest.getPrice());
         plant.setFavorite(plantRequest.isFavorite());
         plant.setCategory(plantRequest.getCategory());
 

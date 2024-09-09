@@ -14,6 +14,7 @@ public class Plant extends BaseEntity {
     private Long id;
 
     private String plantName;
+    private double price;
     private double sold;
     private double rating;
 //    private int reviews;
@@ -23,5 +24,5 @@ public class Plant extends BaseEntity {
     private String category;
 
     @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY)
-    private List<Order> orders;
+    private List<OrderItem> orderItems;
 }

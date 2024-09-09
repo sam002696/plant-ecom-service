@@ -19,6 +19,9 @@ public class PlantRequest {
 //    @Min(value = 0, message = "Reviews count cannot be negative")
 //    private int reviews;
 
+    @NotBlank(message = "Plant price is required")
+    private double price;
+
     @NotBlank(message = "Plant description is required")
     private String plantDesc;
 
