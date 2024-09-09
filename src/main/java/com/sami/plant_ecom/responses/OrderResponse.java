@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Data
 public class OrderResponse {
     private Long orderId;
-    private Long userId;
+    private UserResponse user;
     private double total;
     private String orderStatus;
     private List<OrderItemResponse> orderItems;
@@ -18,7 +18,7 @@ public class OrderResponse {
     public static OrderResponse selectOrder(Order order) {
         OrderResponse response = new OrderResponse();
         response.setOrderId(order.getOrderId());
-        response.setUserId(order.getUser().getId());
+        response.setUser(UserResponse.selectUser(order.getUser()));
         response.setTotal(order.getTotal());
         response.setOrderStatus(order.getOrderStatus().name());
         response.setOrderItems(order.getOrderItems().stream().map(OrderItemResponse::selectOrderItem).collect(Collectors.toList()));
