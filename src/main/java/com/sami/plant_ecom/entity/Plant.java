@@ -23,6 +23,9 @@ public class Plant extends BaseEntity {
     private boolean favorite;
     private String category;
 
-    @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 }

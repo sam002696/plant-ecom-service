@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +20,7 @@ public class PlantResponse implements Serializable {
     private int quantity;
     private boolean favorite;
     private String category;
+    private List<ReviewResponse> reviewResponse;
 
     // Static factory method to convert Plant entity to PlantResponse DTO
     public static PlantResponse select(Plant plant) {
@@ -35,6 +38,12 @@ public class PlantResponse implements Serializable {
         response.setQuantity(plant.getQuantity());
         response.setFavorite(plant.isFavorite());
         response.setCategory(plant.getCategory());
+
+        if(plant.getReviews() != null){
+            response.setReviewResponse(plant.getReviews().stream().map(ReviewResponse::selectReviewWithoutPlantName)
+                    .collect(Collectors.toList()));
+        }
+
 
         return response;
     }

@@ -52,6 +52,14 @@ public class OrderService implements IOrderService {
         List<OrderItem> orderItems = orderRequest.getItems().stream().map(itemRequest -> {
             Plant plant = plantRepository.findById(itemRequest.getPlantId())
                     .orElseThrow(() -> new CustomMessageException("Plant not found"));
+
+
+            if (itemRequest.getQuantity() > plant.getQuantity()) {
+                throw new CustomMessageException("Requested quantity for plant " +  plant.getPlantName().toLowerCase() +
+                        " exceeds available stock.");
+            }
+
+
             OrderItem orderItem = new OrderItem();
             orderItem.setPlant(plant);
             orderItem.setQuantity(itemRequest.getQuantity());

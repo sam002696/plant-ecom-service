@@ -21,7 +21,8 @@ public class OrderResponse {
         response.setUser(UserResponse.selectUser(order.getUser()));
         response.setTotal(order.getTotal());
         response.setOrderStatus(order.getOrderStatus().name());
-        response.setOrderItems(order.getOrderItems().stream().map(OrderItemResponse::selectOrderItem).collect(Collectors.toList()));
+        response.setOrderItems(order.getOrderItems().stream().map(OrderItemResponse::selectOrderItem)
+                .collect(Collectors.toList()));
         return response;
     }
 
