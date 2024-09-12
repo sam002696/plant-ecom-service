@@ -1,9 +1,11 @@
 package com.sami.plant_ecom.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sami.plant_ecom.entity.Review;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReviewResponse {
     private Long reviewId;
     private String comment;

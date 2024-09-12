@@ -60,6 +60,10 @@ public class OrderService implements IOrderService {
             }
 
 
+            // Reduce the plant quantity
+            plant.setQuantity(plant.getQuantity() - itemRequest.getQuantity());
+            plantRepository.save(plant);
+
             OrderItem orderItem = new OrderItem();
             orderItem.setPlant(plant);
             orderItem.setQuantity(itemRequest.getQuantity());

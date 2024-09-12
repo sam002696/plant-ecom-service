@@ -6,8 +6,11 @@ import com.sami.plant_ecom.exceptions.CustomMessageException;
 import com.sami.plant_ecom.repository.PlantRepository;
 import com.sami.plant_ecom.responses.PlantResponse;
 import com.sami.plant_ecom.service.interfaces.IPlantService;
+import com.sami.plant_ecom.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class PlantService implements IPlantService {
@@ -38,5 +41,18 @@ public class PlantService implements IPlantService {
 
         return PlantResponse.select(plant);
 
+    }
+
+    @Override
+    public Map<String, Object> search(Integer page, Integer size, String sortBy, String search) {
+        ServiceHelper<Plant> serviceHelper = new ServiceHelper<>(Plant.class);
+        return serviceHelper.getList(
+                plantRepository.search(search, serviceHelper.getPageable(sortBy, page, size)),
+                page, size);
+    }
+
+    @Override
+    public PlantResponse getPlantsByCategory(String cateogory) {
+        return null;
     }
 }
