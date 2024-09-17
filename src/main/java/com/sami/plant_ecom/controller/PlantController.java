@@ -89,4 +89,22 @@ public class PlantController {
     }
 
 
+
+    @GetMapping("/category")
+    @Operation(summary = "Show list of all plants by category", description = "Show list of all plants by category")
+    @ApiResponse(responseCode = "200", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = PlantResponse.class))
+    })
+    public ResponseEntity<JSONObject> getPlantsByCategory(@RequestParam String category) {
+
+
+        List<PlantResponse> plantResponses = plantService.getPlantsByCategory(category);
+
+
+        return ok(success(plantResponses).getJson());
+    }
+
+
+
+
 }

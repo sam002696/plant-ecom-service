@@ -10,7 +10,9 @@ import com.sami.plant_ecom.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PlantService implements IPlantService {
@@ -52,7 +54,13 @@ public class PlantService implements IPlantService {
     }
 
     @Override
-    public PlantResponse getPlantsByCategory(String cateogory) {
-        return null;
+    public List<PlantResponse> getPlantsByCategory(String category) {
+        List<Plant> plants = plantRepository.findByCategory(category);
+
+        // Map each Plant entity to a PlantResponse DTO
+        return plants.stream()
+                .map(PlantResponse::select)
+                .collect(Collectors.toList());
     }
+
 }

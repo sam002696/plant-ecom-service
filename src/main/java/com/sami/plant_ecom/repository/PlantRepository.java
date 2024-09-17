@@ -1,7 +1,6 @@
 package com.sami.plant_ecom.repository;
 
 import com.sami.plant_ecom.entity.Plant;
-import com.sami.plant_ecom.responses.PlantResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,6 +23,6 @@ public interface PlantRepository extends JpaRepository<Plant, Long> {
     Page<Plant> search(String search, Pageable pageable);
 
 
-    List<PlantResponse> findByCategory(String category);
+    List<Plant> findByCategory(String category);
 
 }

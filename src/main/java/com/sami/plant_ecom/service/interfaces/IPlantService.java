@@ -4,6 +4,7 @@ import com.sami.plant_ecom.dto.PlantRequest;
 import com.sami.plant_ecom.entity.Plant;
 import com.sami.plant_ecom.responses.PlantResponse;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IPlantService {
@@ -13,5 +14,5 @@ public interface IPlantService {
 
     Map<String, Object> search(Integer page, Integer size, String sortBy, String search);
 
-    PlantResponse getPlantsByCategory(String cateogory);
+    List<PlantResponse> getPlantsByCategory(String category);
 }
