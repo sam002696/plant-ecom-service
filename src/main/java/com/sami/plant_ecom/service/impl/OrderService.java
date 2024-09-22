@@ -37,7 +37,8 @@ public class OrderService implements IOrderService {
     @Override
     public OrderResponse placeOrder(OrderRequest orderRequest) {
 
-        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().
+                getAuthentication().getPrincipal();
         Long loggedInUserId = userPrincipal.getId();
 
         User user = userRepository.findById(loggedInUserId)
@@ -82,6 +83,45 @@ public class OrderService implements IOrderService {
 
         // Returning the response
         return OrderResponse.selectOrder(savedOrder);
+    }
+
+
+
+    @Override
+    public OrderResponse cancelOrder(Long orderId) {
+        // Find the order from database
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomMessageException("Order not found"));
+
+        // Check if the order is already cancelled
+        if (order.getOrderStatus() == OrderStatus.CANCELLED) {
+            throw new CustomMessageException("Order is already cancelled");
+        }
+
+        // Update the order status to "CANCELLED"
+        order.setOrderStatus(OrderStatus.CANCELLED);
+
+        // Update the stock for each plant in the order
+        for (OrderItem item : order.getOrderItems()) {
+            Plant plant = item.getPlant();
+            plant.setQuantity(plant.getQuantity() + item.getQuantity());
+            plantRepository.save(plant);
+        }
+
+        // Save the updated order
+        Order updatedOrder = orderRepository.save(order);
+
+        // Return the updated order response
+        return OrderResponse.selectOrder(updatedOrder);
+    }
+
+
+    @Override
+    public List<OrderResponse> findOrderByStatus(OrderStatus orderStatus) {
+        List<Order> orders = orderRepository.findByOrderStatus(orderStatus);
+        return orders.stream()
+                .map(OrderResponse::selectOrder)  // Convert Order to OrderResponse
+                .collect(Collectors.toList());
     }
 
 }
