@@ -20,6 +20,7 @@ public class PlantResponse implements Serializable {
     private int quantity;
     private boolean favorite;
     private String category;
+    private String plantImageUrl;
     private List<ReviewResponse> reviews;
 
     // Static factory method to convert Plant entity to PlantResponse DTO
@@ -38,6 +39,7 @@ public class PlantResponse implements Serializable {
         response.setQuantity(plant.getQuantity());
         response.setFavorite(plant.isFavorite());
         response.setCategory(plant.getCategory());
+        response.setPlantImageUrl(plant.getPlantImageUrl());
 
         if(plant.getReviews() != null){
             response.setReviews(plant.getReviews().stream().map(ReviewResponse::selectReviewWithoutPlantName)

@@ -63,4 +63,27 @@ public class PlantService implements IPlantService {
                 .collect(Collectors.toList());
     }
 
+
+
+    @Override
+    public Plant updatePlant(Long plantId, PlantRequest plantRequest) {
+        // Fetch the existing plant
+        Plant existingPlant = plantRepository.findById(plantId)
+                .orElseThrow(() -> new RuntimeException("Plant not found"));
+
+        // Update the plant details from the request
+        existingPlant.setPlantName(plantRequest.getPlantName());
+        existingPlant.setSold(plantRequest.getSold());
+        existingPlant.setRating(plantRequest.getRating());
+        existingPlant.setPrice(plantRequest.getPrice());
+        existingPlant.setPlantDesc(plantRequest.getPlantDesc());
+        existingPlant.setQuantity(plantRequest.getQuantity());
+        existingPlant.setFavorite(plantRequest.isFavorite());
+        existingPlant.setCategory(plantRequest.getCategory());
+        existingPlant.setPlantImageUrl(plantRequest.getPlantImageUrl());
+
+        // Save the updated plant entity
+        return plantRepository.save(existingPlant);
+    }
+
 }

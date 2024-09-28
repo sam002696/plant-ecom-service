@@ -105,6 +105,22 @@ public class PlantController {
     }
 
 
+    @PutMapping("/update/{plantId}")
+    @Operation(summary = "Update a plant", responses = {
+            @ApiResponse(description = "Successfully updated the plant",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PlantRequest.class)))
+    })
+    public ResponseEntity<JSONObject> updatePlant(
+            @PathVariable Long plantId,
+            @RequestBody PlantRequest plantRequest
+    ) {
+        Plant updatedPlant = plantService.updatePlant(plantId, plantRequest);
+        return ok(success(PlantResponse.select(updatedPlant), "Plant updated successfully").getJson());
+    }
+
+
 
 
 }

@@ -15,4 +15,6 @@ public interface IPlantService {
     Map<String, Object> search(Integer page, Integer size, String sortBy, String search);
 
     List<PlantResponse> getPlantsByCategory(String category);
+
+    Plant updatePlant(Long plantId, PlantRequest plantRequest);
 }

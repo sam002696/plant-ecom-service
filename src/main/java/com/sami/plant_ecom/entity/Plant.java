@@ -22,6 +22,7 @@ public class Plant extends BaseEntity {
     private int quantity;
     private boolean favorite;
     private String category;
+    private String plantImageUrl;
 
     @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;

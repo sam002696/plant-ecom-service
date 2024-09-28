@@ -32,4 +32,7 @@ public class PlantRequest {
 
     @NotBlank(message = "Category is required")
     private String category;
+
+    @NotBlank(message = "Plant image is required")
+    private String plantImageUrl;
 }
