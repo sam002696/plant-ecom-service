@@ -16,6 +16,7 @@ public class PlantResponse implements Serializable {
     private String plantName;
     private double sold;
     private double rating;
+    private double price;
     private String plantDesc;
     private int quantity;
     private boolean favorite;
@@ -34,6 +35,7 @@ public class PlantResponse implements Serializable {
         response.setId(plant.getId());
         response.setPlantName(plant.getPlantName());
         response.setSold(plant.getSold());
+        response.setPrice(plant.getPrice());
         response.setRating(plant.getRating());
         response.setPlantDesc(plant.getPlantDesc());
         response.setQuantity(plant.getQuantity());

@@ -25,6 +25,7 @@ public class PlantService implements IPlantService {
         Plant plant = new Plant();
         plant.setPlantName(plantRequest.getPlantName());
         plant.setPlantDesc(plantRequest.getPlantDesc());
+        plant.setPlantImageUrl(plantRequest.getPlantImageUrl());
         plant.setSold(plantRequest.getSold());
         plant.setRating(plantRequest.getRating());
         plant.setQuantity(plantRequest.getQuantity());
