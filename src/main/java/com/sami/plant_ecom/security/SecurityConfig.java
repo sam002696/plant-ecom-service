@@ -40,9 +40,10 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/webjars/**"
     };
-
     private final CustomUserDetailsService customUserDetailsService;
     private final JWTAuthFilter jwtAuthFilter;
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
     public SecurityConfig(CustomUserDetailsService customUserDetailsService, JWTAuthFilter jwtAuthFilter) {
@@ -54,6 +55,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_MATCHER)
                         .permitAll()
