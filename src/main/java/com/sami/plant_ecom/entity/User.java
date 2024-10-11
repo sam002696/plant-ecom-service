@@ -1,5 +1,6 @@
 package com.sami.plant_ecom.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sami.plant_ecom.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class User extends BaseEntity {
     private String profileImage;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Address> addresses;
     private String email;
     private String name;

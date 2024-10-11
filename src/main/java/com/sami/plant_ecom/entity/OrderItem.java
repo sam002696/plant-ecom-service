@@ -20,6 +20,8 @@ public class OrderItem {
     @JoinColumn(name = "plant_id")
     private Plant plant;
 
+    @Column(nullable = false)
     private int quantity;
+
     private double price;
 }

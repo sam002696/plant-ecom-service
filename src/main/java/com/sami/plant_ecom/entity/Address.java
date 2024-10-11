@@ -1,17 +1,19 @@
 package com.sami.plant_ecom.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "addresses") // Changed table name to 'addresses' to better reflect the entity.
+@Table(name = "addresses")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String addressType;
     private String streetAddress;
     private String addressLine2;
     private String city;
@@ -20,6 +22,7 @@ public class Address {
     private String country;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")  // Define foreign key column for the relationship.
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }
