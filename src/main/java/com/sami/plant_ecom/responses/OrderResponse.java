@@ -13,6 +13,8 @@ public class OrderResponse {
     private UserResponse user;
     private double total;
     private String orderStatus;
+    private String shippingType;  // New field for shipping type
+    private AddressResponse address;  // Include AddressResponse
     private List<OrderItemResponse> orderItems;
 
     public static OrderResponse selectOrder(Order order) {
@@ -21,6 +23,12 @@ public class OrderResponse {
         response.setUser(UserResponse.selectUser(order.getUser()));
         response.setTotal(order.getTotal());
         response.setOrderStatus(order.getOrderStatus().name());
+
+        response.setShippingType(order.getShippingType());
+
+        // Set address using the AddressResponse conversion
+        response.setAddress(AddressResponse.select(order.getAddress()));
+
         response.setOrderItems(order.getOrderItems().stream().map(OrderItemResponse::selectOrderItem)
                 .collect(Collectors.toList()));
         return response;

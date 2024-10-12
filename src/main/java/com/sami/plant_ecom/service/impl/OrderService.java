@@ -1,10 +1,7 @@
 package com.sami.plant_ecom.service.impl;
 
 import com.sami.plant_ecom.dto.OrderRequest;
-import com.sami.plant_ecom.entity.Order;
-import com.sami.plant_ecom.entity.OrderItem;
-import com.sami.plant_ecom.entity.Plant;
-import com.sami.plant_ecom.entity.User;
+import com.sami.plant_ecom.entity.*;
 import com.sami.plant_ecom.enums.OrderStatus;
 import com.sami.plant_ecom.exceptions.CustomMessageException;
 import com.sami.plant_ecom.repository.OrderRepository;
@@ -34,32 +31,38 @@ public class OrderService implements IOrderService {
     @Autowired
     private  UserRepository userRepository;
 
+
     @Override
     public OrderResponse placeOrder(OrderRequest orderRequest) {
-
-        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().
-                getAuthentication().getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long loggedInUserId = userPrincipal.getId();
 
         User user = userRepository.findById(loggedInUserId)
                 .orElseThrow(() -> new CustomMessageException("Logged-in user not found"));
 
+        // Find the address by id
+        Address address = user.getAddresses().stream()
+                .filter(addr -> addr.getId().equals(orderRequest.getAddressId()))
+                .findFirst()
+                .orElseThrow(() -> new CustomMessageException("Address not found for the logged-in user"));
+
         // Create a new Order entity
         Order order = new Order();
         order.setUser(user);
         order.setOrderStatus(OrderStatus.PLACED);
+        order.setShippingType(orderRequest.getShippingType()); // setting shipping type
+        order.setAddress(address); // setting the fetched address
+        order.setTotal(orderRequest.getTotalAmount()); // using totalAmount from the request
 
         // Create OrderItems based on the request
         List<OrderItem> orderItems = orderRequest.getItems().stream().map(itemRequest -> {
             Plant plant = plantRepository.findById(itemRequest.getPlantId())
                     .orElseThrow(() -> new CustomMessageException("Plant not found"));
 
-
             if (itemRequest.getQuantity() > plant.getQuantity()) {
-                throw new CustomMessageException("Requested quantity for plant " +  plant.getPlantName().toLowerCase() +
+                throw new CustomMessageException("Requested quantity for plant " + plant.getPlantName().toLowerCase() +
                         " exceeds available stock.");
             }
-
 
             // Reduce the plant quantity
             plant.setQuantity(plant.getQuantity() - itemRequest.getQuantity());
@@ -73,17 +76,14 @@ public class OrderService implements IOrderService {
             return orderItem;
         }).collect(Collectors.toList());
 
-        // Calculating total
-        double total = orderItems.stream().mapToDouble(OrderItem::getPrice).sum();
-        order.setTotal(total);
+        // Set order items and save the order
         order.setOrderItems(orderItems);
-
-        // Saving the order
         Order savedOrder = orderRepository.save(order);
 
         // Returning the response
         return OrderResponse.selectOrder(savedOrder);
     }
+
 
 
 

@@ -20,6 +20,12 @@ public class Order extends BaseEntity {
 
     private double total;
 
+    private String shippingType;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address address;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
