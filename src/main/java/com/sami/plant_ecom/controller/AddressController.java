@@ -65,7 +65,7 @@ public class AddressController {
     })
     public ResponseEntity<JSONObject> getAllAddresses() {
         List<AddressResponse> addresses = addressService.getAllAddresses();
-        return ok(success(addresses, "Addresses retrieved successfully").getJson());
+        return ok(success(addresses, "").getJson());
     }
 
 }

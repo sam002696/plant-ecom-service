@@ -39,9 +39,11 @@ public class OrderResponse {
         private String plantName;
         private int quantity;
         private double price;
+        private String plantImageUrl;
 
         public static OrderItemResponse selectOrderItem(OrderItem orderItem) {
             OrderItemResponse response = new OrderItemResponse();
+            response.setPlantImageUrl(orderItem.getPlant().getPlantImageUrl());
             response.setPlantName(orderItem.getPlant().getPlantName());
             response.setQuantity(orderItem.getQuantity());
             response.setPrice(orderItem.getPrice());

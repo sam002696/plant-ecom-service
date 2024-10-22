@@ -78,7 +78,7 @@ public class OrderController {
         List<OrderResponse> orders = orderService.findOrderByStatus(status);
 
         // Returning a successful JSON response
-        return ok(success(orders, "Orders fetched successfully").getJson());
+        return ok(success(orders, "").getJson());
     }
 
 }
