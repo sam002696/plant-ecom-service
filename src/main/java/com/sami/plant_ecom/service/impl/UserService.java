@@ -2,12 +2,15 @@ package com.sami.plant_ecom.service.impl;
 
 import com.sami.plant_ecom.dto.LoginRequest;
 import com.sami.plant_ecom.dto.RegisterRequest;
+import com.sami.plant_ecom.dto.UserInfoChangeRequest;
 import com.sami.plant_ecom.entity.User;
 import com.sami.plant_ecom.enums.RoleName;
 import com.sami.plant_ecom.exceptions.CustomMessageException;
 import com.sami.plant_ecom.repository.UserRepository;
 import com.sami.plant_ecom.responses.LoginResponse;
+import com.sami.plant_ecom.responses.UserResponse;
 import com.sami.plant_ecom.security.UserPrincipal;
+import com.sami.plant_ecom.service.CloudinaryService;
 import com.sami.plant_ecom.service.CustomUserDetailsService;
 import com.sami.plant_ecom.service.interfaces.IUserService;
 import com.sami.plant_ecom.utils.JWTUtils;
@@ -15,12 +18,13 @@ import com.sami.plant_ecom.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -36,6 +40,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     
 
@@ -93,6 +100,31 @@ public class UserService implements IUserService {
         return serviceHelper.getList(
                 userRepository.search(search, serviceHelper.getPageable(sortBy, page, size)),
                 page, size);
+    }
+
+
+
+    @Override
+    public UserResponse updateUserInfo(UserInfoChangeRequest request, MultipartFile profileImage) {
+
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().
+                getAuthentication().getPrincipal();
+        Long userId = userPrincipal.getId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomMessageException("User not found with id: " + userId));
+
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPhoneNumber(request.getPhoneNumber());
+
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = cloudinaryService.uploadFile(profileImage);
+            user.setProfileImage(imageUrl);
+        }
+        User userInfo =  userRepository.save(user);
+
+        return UserResponse.selectUserInfoChange(userInfo);
     }
     
 }

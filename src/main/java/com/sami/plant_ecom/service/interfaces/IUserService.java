@@ -4,8 +4,11 @@ package com.sami.plant_ecom.service.interfaces;
 
 import com.sami.plant_ecom.dto.LoginRequest;
 import com.sami.plant_ecom.dto.RegisterRequest;
+import com.sami.plant_ecom.dto.UserInfoChangeRequest;
 import com.sami.plant_ecom.entity.User;
 import com.sami.plant_ecom.responses.LoginResponse;
+import com.sami.plant_ecom.responses.UserResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -15,4 +18,6 @@ public interface IUserService {
     LoginResponse login(LoginRequest loginRequest);
 
     Map<String, Object> search(Integer page, Integer size, String sortBy, String search);
+
+    UserResponse updateUserInfo( UserInfoChangeRequest request, MultipartFile profileImage);
 }
